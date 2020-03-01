@@ -1,0 +1,21 @@
+(define (make-account balance)
+    (define (withdraw amount)
+        (if (>= balance amount)
+            (begin (set! balance (- balance amount))
+                    balance)
+            (quote unsufficient)))
+    (define (deposit amount)
+        (set! balance (+ amount balance)))
+    (define (dispatch m)
+        (cond ((eq? m (quote withdraw)) withdraw)
+              ((eq? m (quote deposit)) deposit)
+              (else (quote unknow))))
+    dispatch)
+    
+(define acc (make-account 100))
+
+
+(let ((a 2)) 
+	(define (foo) (display a)) 
+	(define (bar) (let ((a 3)) (foo))) 
+	(bar))

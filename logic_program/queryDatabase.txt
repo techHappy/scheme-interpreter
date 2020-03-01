@@ -1,0 +1,160 @@
+;Êý¾Ý¼¯
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (address (Bitdiddle Ben) (Slumerville (Ridge Road) 10)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (job (Bitdiddle Ben) (computer wizard)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (salary (Bitdiddle Ben) 60000))
+
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (address (Hacker Alyssa P) (Cambridge (Mass Ave) 78)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (job (Hacker Alyssa P) (computer programmer)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (salary (Hacker Alyssa P) 40000))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (supervisor (Hacker Alyssa P) (Bitdiddle Ben)))
+
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (address (Fect Cy D) (Cambridge (Ames Street) 3)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (job (Fect Cy D) (computer programmer)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (salary (Fect Cy D) 35000))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (supervisor (Fect Cy D) (Bitdiddle Ben)))
+
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (address (Tweakit Lem E) (Boston (Bay State Road) 22)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (job (Tweakit Lem E) (computer technician)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (salary (Tweakit Lem E) 25000))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (supervisor (Tweakit Lem E) (Bitdiddle Ben)))
+
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (address (Reasoner Louis) (Slumerville (Pine Tree Road) 80)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (job (Reasoner Louis) (computer programmer trainee)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (salary (Reasoner Louis) 30000))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (supervisor (Reasoner Louis) (Hacker Alyssa P)))
+
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (supervisor (Bitdiddle Ben) (Warbucks Oliver)))
+
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (address (Warbucks Oliver) (Swellesley (Top Heap Road))))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (job (Warbucks Oliver) (administration big wheel)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (salary (Warbucks Oliver) 150000))
+
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (address (Scrooge Eben) (Weston (Shady Lane) 10)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (job (Scrooge Eben) (accounting chief accountant)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (salary (Scrooge Eben) 75000))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (supervisor (Scrooge Eben) (Warbucks Oliver)))
+
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (address (Cratchet Robert) (Allston (N Harvard Street) 16)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (job (Cratchet Robert) (accounting scrivener)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (salary (Cratchet Robert) 18000))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (supervisor (Cratchet Robert) (Scrooge Eben)))
+
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (address (Aull DeWitt) (Slumerville (Onion Square) 5)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (job (Aull DeWitt) (administration secretary)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (salary (Aull DeWitt) 25000))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (supervisor (Aull DeWitt) (Warbucks Oliver)))
+
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (can-do-job (computer wizard) (computer programmer)))
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (can-do-job (computer wizard) (computer technician)))
+
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (can-do-job (computer programmer) (computer programmer trainee)))
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (rule (wheel ?person)
+      (and (supervisor ?middle-manager ?person)
+           (supervisor ?x ?middle-manager))))
+           
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (rule (lives-near ?person-1 ?person-2)
+      (and (address ?person-1 (?town . ?rest-1))
+           (address ?person-2 (?town . ?rest-2))
+           (not (same ?person-1 ?person-2)))))
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))     
+(assert! (rule (same ?x ?x)))
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))     
+(assert! (rule (append-to-form () ?y ?y)))
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))     
+(assert! (rule (append-to-form (?u . ?v) ?y (?u . ?z))
+     	 	   (append-to-form ?v ?y ?z)))
+     	 	   
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read)))) 
+(assert! (rule (?x next-to ?y in (?x ?y . ?u)))) 	 
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))   
+(assert! (rule (?x next-to ?y in (?v . ?z))
+     (?x next-to ?y in ?z)))   
+     
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))   
+(assert! (rule (last-pair (?u . ?v) ?u)
+     (same ?v ())))   
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))   
+(assert! (rule (last-pair (?u . ?v) ?x)
+     (last-pair ?v ?x)))
+     
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))   
+(assert! (rule (job-instead ?p1 ?p2)
+     (and (or  (and (job ?p1 ?j1)
+                    (job ?p2 ?j2)
+                    (same ?j1 ?j2))
+               (and (job ?p1 ?j1)
+                    (job ?p2 ?j2)
+                    (can-do-job ?j1 ?j2)))
+          (not (same ?p1 ?p2))))  )  
+          
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (meeting accounting (Monday 9am)))
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (meeting administration (Monday 10am)))
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (meeting computer (Wednesday 3pm)))
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (meeting administration (Friday 1pm)))    
+
+(add-rule-or-assertion! (add-assertion-body (query-syntax-process (read))))
+(assert! (meeting whole-company (Wednesday 4pm)))             

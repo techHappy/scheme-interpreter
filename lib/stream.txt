@@ -1,0 +1,103 @@
+(define (memo-proc proc)
+    (let ((already-run? false)
+          (result false))
+          (lambda ()
+                (if (not already-run?)
+                    (begin (set! result (proc))
+                           (set! already-run? true)
+                           result)
+                    result))))  
+
+(define (force delayed-object)
+    (delayed-object))
+
+(define the-empty-stream nil)     
+
+(define (stream-null? s)
+    (null? s))
+
+(define (stream-car stream)
+    (car stream))
+
+(define (stream-cdr stream)
+    (force (cdr stream)))
+
+(define (stream-ref s n)
+    (if (= n 0)
+        (stream-car s)
+        (stream-ref (stream-cdr s) (- n 1)))) 
+        
+(define (stream-append s1 s2)
+  (if (stream-null? s1)
+      s2
+      (cons-stream (stream-car s1)
+                   (stream-append (stream-cdr s1) s2))))        
+
+(define (stream-map proc s)
+    (if (stream-null? s)
+        the-empty-stream
+        (cons-stream (proc (stream-car s)) (stream-map proc (stream-cdr s)))))
+
+(define (stream-for-each proc s)
+    (if (stream-null? s)
+        'done
+        (begin (proc (stream-car s))
+                (stream-for-each proc (stream-cdr s)))))
+                
+(define (stream-filter predicate stream)
+    (cond ((stream-null? stream) nil)
+          ((predicate (stream-car stream))
+            (cons-stream (stream-car stream)
+                  (stream-filter predicate (stream-cdr stream))))
+          (else (stream-filter predicate (stream-cdr stream)))))                
+
+(define (stream-enumerate-integer low high)
+    (if (> low high)
+        nil
+        (cons-stream low 
+              (stream-enumerate-integer (+ low 1) high))))
+              
+              
+(define (integers-starting-from n)
+    (cons-stream n (integers-starting-from (+ n 1))))
+
+(define integers (integers-starting-from 1)) 
+
+(define no-sevens 
+    (stream-filter (lambda (x) (not (divisiable? x 7)))
+                    integers))
+
+(define (fibgen a b)
+    (cons-stream a (fibgen b (+ a b))))
+
+(define fibs (fibgen 0 1))      
+
+(define (sieve stream)
+    (cons-stream (stream-car stream)
+                 (sieve (stream-filter 
+                                (lambda (x)
+                                        (not (divisiable? x (stream-car stream))))
+                                (stream-cdr stream)))))
+                                
+(define primes (sieve (integers-starting-from 2)))  
+
+(define (add-streams s1 s2) h
+    (cond ((stream-null? s1) s2) 
+          ((stream-null? s2) s1) 
+          (else (cons-stream (+ (stream-car s1) (stream-car s2)) 
+                             (add-streams (stream-cdr s1) (stream-cdr s2)))))) 
+
+(define (mul-streams s1 s2) 
+    (cond ((stream-null? s1) s2) 
+          ((stream-null? s2) s1) 
+          (else (cons-stream (* (stream-car s1) (stream-car s2)) 
+                             (mul-streams (stream-cdr s1) (stream-cdr s2))))))                                              
+                    
+(define (display-stream s)
+    (stream-for-each display-line s))    
+    
+(define ones (cons-stream 1 ones))  
+
+(define s (cons-stream nil nil))
+(define st1 (stream-enumerate-integer 0 10))
+(define st2 (stream-enumerate-integer 20 30))

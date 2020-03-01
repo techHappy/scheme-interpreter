@@ -1,0 +1,170 @@
+(define (to-int proc) 
+    ((proc (lambda (n) (+ n 1))) 0))
+
+(define (to-boolean proc)
+    ((proc true) false))    
+    
+(define (to-array proc f)
+        (if (to-boolean (IS_EMPTY proc))
+            nil
+            (cons (f (FIRST proc))
+                  (to-array (REST proc) f))))       
+
+(define char-list '(0 1 2 3 4 5 6 7 8 9 B F i u z))
+                  
+(define (to-string proc)
+        (let ((index-list (to-array proc to-int)))
+             (list2string (map (lambda (index)
+                                        (list-ref char-list index))
+                                index-list))))                  
+                                             
+
+(define ZERO (lambda (p) (lambda (x) x)))
+(define ONE (lambda (p) (lambda (x) (p x))))
+(define TWO (lambda (p) (lambda (x) (p (p x)))))
+(define THREE (lambda (p) (lambda (x) (p (p (p x))))))
+(define FOUR (lambda (p) (lambda (x) (p (p (p (p x)))))))
+(define FIVE (lambda (p) (lambda (x) (p (p (p (p (p x))))))))
+
+(define TRUE (lambda (x) (lambda (y) x)))
+(define FALSE (lambda (x) (lambda (y) y)))
+(define IF (lambda (b) b))
+
+(define IS_ZERO (lambda (n) ((n (lambda (x) FALSE)) TRUE)))
+
+(define PAIR (lambda (x) 
+                    (lambda (y) 
+                            (lambda (f) 
+                                    ((f x) y)))))
+(define LEFT (lambda (p) 
+                    (p (lambda (x) 
+                                (lambda (y) x)))))
+(define RIGHT (lambda (p) 
+                    (p (lambda (x) 
+                                (lambda (y) y)))))
+
+(define INCREMENT (lambda (n)
+                          (lambda (p)
+                                  (lambda (x)
+                                          (p ((n p) x))))))          
+
+(define SLIDE (lambda (p)
+                      ((PAIR (RIGHT p)) (INCREMENT (RIGHT p)))))       
+
+(define DECREMENT (lambda (n)
+                          (LEFT ((n SLIDE) ((PAIR ZERO) ZERO)))))    
+
+(define ADD (lambda (m)
+                    (lambda (n)
+                            ((n INCREMENT) m))))
+
+(define SUBTRACT (lambda (m)
+                         (lambda (n)
+                                 ((n DECREMENT) m))))
+
+(define MULTIPLY (lambda (m)
+                         (lambda (n)
+                                 ((n (ADD m)) ZERO))))
+
+(define POWER (lambda (m)
+                      (lambda (n)
+                              ((n (MULTIPLY m)) ONE))))
+
+
+(define LESS_OR_EQUAL (lambda (m)
+                              (lambda (n)
+                                      (IS_ZERO ((SUBTRACT m) n)))))
+
+(define MOD (lambda (m)
+                    (lambda (n)
+                            (((IF ((LESS_OR_EQUAL n) m)) 
+                                  (lambda (x)
+                                          (((MOD ((SUBTRACT m) n)) n) x)))
+                                  m)))) 
+(define EMPTY ((PAIR TRUE) TRUE))
+(define UNSHIFT (lambda (l)
+                        (lambda (x)
+                                ((PAIR FALSE) ((PAIR x) l)))))
+(define IS_EMPTY LEFT)
+(define FIRST   (lambda (l)
+                        (LEFT (RIGHT l))))           
+(define REST   (lambda (l)
+                        (RIGHT (RIGHT l))))    
+                        
+(define list ((UNSHIFT ((UNSHIFT ((UNSHIFT EMPTY) THREE)) TWO)) ONE))
+
+(define RANGE (lambda (m)
+                      (lambda (n)
+                              (((IF ((LESS_OR_EQUAL m) n))
+                                (lambda (x)
+                                        (((UNSHIFT ((RANGE (INCREMENT m)) n)) m) x)))
+                                EMPTY))))         
+
+(define FOLD (lambda (l)
+                     (lambda (x)
+                             (lambda (g)
+                                     (((IF (IS_EMPTY l))
+                                       x)
+                                       (lambda (y)
+                                               (((g (((FOLD (REST l)) x) g)) (FIRST l)) y)))))))
+                                               
+(define TEN ((MULTIPLY TWO) FIVE))
+(define FIFTEEN ((MULTIPLY THREE) FIVE))
+(define HUNDRED ((MULTIPLY TEN) TEN))
+(define B TEN)
+(define F (INCREMENT B))
+(define I (INCREMENT F))
+(define U (INCREMENT I))
+(define ZED (INCREMENT U))
+
+(define FIZZ ((UNSHIFT ((UNSHIFT ((UNSHIFT ((UNSHIFT EMPTY) ZED)) ZED)) I)) F))
+(define BUZZ ((UNSHIFT ((UNSHIFT ((UNSHIFT ((UNSHIFT EMPTY) ZED)) ZED)) U)) B))
+(define FIZZBUZZ ((UNSHIFT ((UNSHIFT ((UNSHIFT ((UNSHIFT BUZZ) ZED)) ZED)) I)) F))     
+
+(define PUSH (lambda (l)
+                     (lambda (x)
+                             (((FOLD l) ((UNSHIFT EMPTY) x)) UNSHIFT))))
+
+(define DIV (lambda (m)
+                    (lambda (n)
+                            (((IF ((LESS_OR_EQUAL n)m))
+                              (lambda (x)
+                                      ((INCREMENT ((DIV ((SUBTRACT m) n)) n)) x)))
+                              ZERO))))                             
+
+(define TO_DIGITS (lambda (n)
+                          ((PUSH (((IF ((LESS_OR_EQUAL n) (DECREMENT TEN)))
+                                       EMPTY)
+                                       (lambda (x)
+                                               ((TO_DIGITS ((DIV n) TEN)) x))))
+                                  ((MOD n) TEN))))
+
+(define MAP (lambda (k)
+                    (lambda (f)
+                            (((FOLD k) EMPTY) (lambda (l)
+                                                      (lambda (x)
+                                                              ((UNSHIFT l) (f x))))))))                                  
+
+
+
+(define r  ((MAP ((RANGE ONE) HUNDRED))
+      (lambda (x)
+              (((IF (IS_ZERO ((MOD x) FIFTEEN)))
+                    FIZZBUZZ)
+                    (((IF (IS_ZERO ((MOD x) FIVE)))
+                          BUZZ)
+                          (((IF (IS_ZERO ((MOD x) THREE)))
+                                FIZZ)
+                                (TO_DIGITS x)))))))                                  
+
+(define (part-of s count f)
+        (if (<= count 0)
+            nil
+            (cons (f (FIRST s))
+                  (part-of (REST s) (- count 1) f))))                                          
+                  
+(define ZEROS ((UNSHIFT (lambda (x) (ZEROS x))) ZERO))                           
+(define UPWARDS_OF (lambda (n)
+                           ((UNSHIFT (lambda (x)
+                                             ((UPWARDS_OF (INCREMENT n)) x)))
+                                     n)))                                  
